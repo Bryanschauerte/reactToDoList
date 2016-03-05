@@ -21,20 +21,24 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin()
   ],
+  debug: true,
+devtool: "#eval-source-map",
   module:{
     loaders:[{
       test: /\.jsx?$/,
       exclude:/node_modules/,
       loaders:['react-hot','babel']
-    },
-{
-  test: /\.scss$/,
-  loaders: ['style-loader', 'css-loader', 'postcss-loader']
-}
-  ]},
-  postcss: function(){
-    return [autoprefixer, precss];
-  }
+    }
+//     ,
+// {
+//   test: /\.scss$/,
+//   loaders: ['style-loader', 'css-loader', 'postcss-loader']
+// }
+  ]
+},
+  // postcss: function(){
+  //   return [autoprefixer, precss];
+  // }
 
 };
 // live updates at http://localhost:8080/build/

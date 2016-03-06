@@ -2,16 +2,10 @@ import React from "react";
 import ViewActionsCreator from "../actions/ViewActionsCreator";
 import TextInput from './TextInput';
 import TodoListItem from './TodoListItem';
+import TodoStore from '../store/TodoStore'
 
-console.log(TodoListItem)
+
 var TaskBox = React.createClass({
-  props:{
-    title: React.PropTypes.string,
-    todos: React.PropTypes.array,
-    id: React.PropTypes.string,
-    removeTask:React.PropTypes.func.isRequired,
-    className: React.PropTypes.string
-  },
 
   getInitialState(){
     return {
@@ -20,45 +14,78 @@ var TaskBox = React.createClass({
       id: this.props.id
     }
   },
-  removeTodo(todoID){
-    var tastID = this.state.id;
-    ViewActionsCreator.destoryTODO(taskID, todoID);
+
+  getDefaultProps(){
+    return {
+        title: React.PropTypes.string,
+        todos: React.PropTypes.array,
+        id: React.PropTypes.string,
+        className: React.PropTypes.string
+      }
+  },
+
+  //called after initial rendering, can ref children
+  componentDidMount(nextProps){
+    //for dom stuff  after rendering
+  },
+  componentWillMount(){
+    TodoStore.addChangeListener(this._onChange);
+  },
+
+  componentWillUnmount(){
+    TodoStore.removeChangeListener(this._onChange);
+  },
+  _onChange(){
+    this.setState(
+    {todos: this.props.todos}
+  );
   },
 
 renderListItems(){
 
+  var taskID = this.state.id;
   var todos = this.state.todos.map((item, index)=>{
-    var id = this.item.id
-    var removeHandle = this.removeTodo.bind(this, id);
-    return (<TodoListItem
-      key={item.id}
+  var id = item.id;
+    return (
+      <TodoListItem
+      taskID={taskID}
+      key={index}
       singleTodo={item}
-      removeFunction={this.removeHandle}/>);
+      />);
   });
   return todos;
 },
 
-removeTask(){
+
+
+removeTaskBox(){
   var taskID = this.state.id;
-  this.props.removeTask(taskID);
+  ViewActionsCreator.destroyTASK(taskID);
 },
 
-  render(){
+render(){
 
     return(
-      <div className="TaskBox">
-        <div className="taskBoxHeader"><h3 className="taskBoxTitle">{title}</h3>
-         <button onClick={this.removeTask}>REMOVE TASK</button>
+      <div className="TaskBox" key={this.state.id}>
+        <div className="taskBoxHeader"><h3 className="taskBoxTitle">Title: {this.state.title}</h3>
+         <button
+           onClick={this.removeTaskBox}
+           >REMOVE TASK</button>
          </div>
           <TextInput
             className = "taskText"
-            Placeholder= "Add a Subtask"
-            onSave = {this._save}
+            placeholder= "Add a Subtask"
+            onSave = {this._saveAndAddTodo}
             />
-          <ul>{renderListItems()}</ul>
+          <ul>{this.renderListItems()}</ul>
       </div>
     );
+  },
+  _saveAndAddTodo(input){
+    var taskID = this.state.id;
+    ViewActionsCreator.createATODO( taskID, input );
   }
 
 });
+
 module.exports = TaskBox;

@@ -22,27 +22,27 @@ componentWillMount(){
 componentWillUnmount(){
   TodoStore.removeChangeListener(this._onChange);
 },
-removeTaskBox(TastID){
-  ViewActionsCreator.destoryTODO(TaskID);
-},
+
 
 renderTaskBoxes(){
+
   var TaskBoxes = this.state.allTasks.map((item, index)=>{
-    var removeHandle = this.removeTaskBox.bind(this.item.id);
-    return (<TaskBoxes
-      title={this.item.title}
-      todos={this.item.todos}
-      id={this.item.id}
-      removeTask={this.removeHandle}
+    return (<TaskBox
+      key={index}
+      title={item.title}
+      todos={item.todos}
+      id={item.id}
       className="TaskBoxWhole"
       />);
   })
+  return TaskBoxes;
 },
 
   render(){
     return (
       <div className="MainContainer">
-{this.renderTaskBoxes()}
+        <h2>this is the boxes</h2>
+        {this.renderTaskBoxes()}
       </div>
     );
   },

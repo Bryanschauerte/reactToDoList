@@ -8,7 +8,7 @@ var TextInput = React.createClass({
 
     id: React.PropTypes.string,
     placeholder: React.PropTypes.string,
-    text: React.PropTypes.string,
+    value: React.PropTypes.string,
     className: React.PropTypes.string,
     onSave: React.PropTypes.func.isRequired
 
@@ -16,7 +16,7 @@ var TextInput = React.createClass({
 
   getInitialState(){
     return {
-      text: this.props.value
+      value: this.props.value || ''
     };
   },
 
@@ -29,21 +29,22 @@ var TextInput = React.createClass({
       onBlue = {this._save}
       onChange = {this._onChange}
       onKeyDown = {this._onKeyDown}
-      text = {this.state.text}
+      value = {this.state.value}
       autoFocus= {true}
       />);
 
   },
 
   _save(){
-    this.props.onSave(this.state.text);
+    this.props.onSave(this.state.value);
     this.setState({
-      text:''
+      value:''
     })
+
   },
 
   _onChange(event){
-    this.setState({text: event.target.value});
+    this.setState({value: event.target.value});
   },
 
   _onKeyDown(event){

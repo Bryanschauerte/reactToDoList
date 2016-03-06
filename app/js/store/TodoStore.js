@@ -9,8 +9,11 @@ import { ActionTypes } from '../constants/Constants';
 var _tasks = [];
 
 function addATask(taskTitle){
+  var newTasks = _tasks
   var id = (+new Date() + Math.floor(Math.random() * 999999)).toString(36);
-  _tasks.push({id:id, title:taskTitle, todos:[]});
+  newTasks.push({id:id, title:taskTitle, todos:[]});
+  _tasks = newTasks;
+
 
 }
 
@@ -18,13 +21,12 @@ function addATodo (taskID, input){
   var uniqueId = (+new Date() + Math.floor(Math.random() * 999999)).toString(36);
   var updated_tasks = _tasks.map((item)=>{
     if(item.id == taskID){
-      //maybe a problem here with push returing 1
-      return item.todos.push([uniqueId, input, false]);
+      item.todos.push([uniqueId, input, false]);
     }
     return item;
   })
+   _tasks = updated_tasks;
 
-  return _task = updated_tasks;
 }
 
 
@@ -41,17 +43,20 @@ function destoryTodo(taskID, todoID) {
   var allButRemoved = _tasks.map((item)=>{
     if( item.id == taskID ){
       var filteredTodos = item.todos.filter((aItem)=>{
-
         if (aItem[0] != todoID){
+
           return aItem;
         }
       });
       item.todos =  filteredTodos;
-      return item;
+
     }
     return item;
   });
-    return allButRemoved = _tasks;
+
+     _tasks= allButRemoved;
+     return _tasks;
+
 };
 
 var TodoStore = assign({}, EventEmitter.prototype, {
@@ -78,8 +83,9 @@ TodoDispatcher.register((action)=>{
   var taskID;
   var todoID;
   var input;
+console.log(action, "the action");
 
-  if(action.type == ActionTypes.ADD_TASK){
+  if(action.ActionType == ActionTypes.ADD_TASK){
     text = action.title.trim();
     console.log("ADD_TASK firing", text);
     if(text != ''){
@@ -88,7 +94,7 @@ TodoDispatcher.register((action)=>{
     }
   }
 
-  if(action.type == ActionTypes.ADD_TODO){
+  if(action.ActionType == ActionTypes.ADD_TODO){
     input = action.input.trim();
     taskID = action.taskID;
     console.log("ADD_TODO firing", input);
@@ -98,17 +104,19 @@ TodoDispatcher.register((action)=>{
     }
   }
 
-  if(action.type = ActionTypes.DELETE_TASK){
+  if(action.ActionType == ActionTypes.DELETE_TASK){
     console.log("DELETE_TASK firing", input);
     taskID = action.taskID;
     destroyATask(taskID);
     TodoStore.emitChange();
   }
-  if(action.type = ActionTypes.DELETE_TODO){
+  if(action.ActionType == ActionTypes.DELETE_TODO){
+    console.log("DELETE_TODO firing", action);
     taskID = action.taskID;
     todoID= action.todoID;
     destoryTodo(taskID, todoID);
     TodoStore.emitChange();
+
   }
 
 

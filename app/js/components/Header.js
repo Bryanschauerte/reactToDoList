@@ -12,13 +12,14 @@ var Header = React.createClass({
         <h1 id = "headerTitle">Your Tasks</h1>
         <TextInput
           id = "headerText"
-          Placeholder= "Enter Task Title"
+          placeholder= "Enter Task Title"
           onSave = {this._save}
           />
       </div>
     )
   },
   _save(title){
+
     ViewActionsCreator.createATASK(title);
 
   }

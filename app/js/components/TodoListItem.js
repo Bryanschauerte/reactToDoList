@@ -8,7 +8,7 @@ var TodoListItem = React.createClass({
 
   props:{
     singleTodo: React.PropTypes.array,
-    removeFunction: React.PropTypes.func.isRequired
+    taskID: React.PropTypes.string.isRequired
 
   },
 
@@ -18,27 +18,40 @@ var TodoListItem = React.createClass({
     text: this.props.singleTodo[1],
     done: this.props.singleTodo[2],
     timesClicked: 0,
-    onRemove: this.props.removeFunction,
     className: "clickZero"
-  };
+    };
   },
-
+  removeTodo(taskID, todoID){
+    var tastID = this.state.id;
+    ViewActionsCreator.destoryTODO(taskID, todoID);                   ////////
+  },
 
   increaseTimesClicked(){
-    if(this.state.timesClicked >= 3){
+
+    if(this.state.timesClicked > 2){
       var todoID = this.state.id;
-      return this.state.onRemove(todoID);
+      var taskID = this.props.taskID;
+      ViewActionsCreator.destoryTODO(taskID, todoID);
+
     }
+    var timesClicked = this.state.timesClicked;
+    timesClicked++;
+
     var styleNames = ['clickZero', 'clickOne', 'clickTwo'];
+    var style = styleNames[timesClicked]
     this.setState({
-      className: styleNames[(this.state.timesClicked + 1)],
-      timesClicked: this.state.timesClicked++
+      className: style,
+      timesClicked: timesClicked
 
     })
+
   },
 
+
   render(){
+    var id = (+new Date() + Math.floor(Math.random() * 999999)).toString(36);
     return (<li
+      key={id}
       onClick={this.increaseTimesClicked}
       className={this.state.className}
       >
@@ -47,5 +60,5 @@ var TodoListItem = React.createClass({
   }
 
 });
-console.log(TodoListItem, "todolist")
+
 module.exports = TodoListItem;

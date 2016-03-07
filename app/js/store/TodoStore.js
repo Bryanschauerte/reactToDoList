@@ -44,19 +44,15 @@ function destoryTodo(taskID, todoID) {
     if( item.id == taskID ){
       var filteredTodos = item.todos.filter((aItem)=>{
         if (aItem[0] != todoID){
-
           return aItem;
         }
       });
       item.todos =  filteredTodos;
-
     }
     return item;
   });
-
      _tasks= allButRemoved;
      return _tasks;
-
 };
 
 var TodoStore = assign({}, EventEmitter.prototype, {
@@ -73,9 +69,17 @@ var TodoStore = assign({}, EventEmitter.prototype, {
 
   getAllTasks(){
     return _tasks;
+  },
+
+  getTaskTodos(TaskID){
+
+    var single = _tasks.filter((item)=>{
+      if(item.id == TaskID){
+        return item;
+      }
+    })
+    return single[0].todos;
   }
-
-
 });
 
 TodoDispatcher.register((action)=>{
@@ -118,7 +122,6 @@ console.log(action, "the action");
     TodoStore.emitChange();
 
   }
-
 
 })
 

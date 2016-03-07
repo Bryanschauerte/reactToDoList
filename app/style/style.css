@@ -1,14 +1,37 @@
-#MainContainer{}
-#headerContainer{}
-#headerTitle{}
+
+#headerContainer{
+  background-color: #43ab40;
+}
+#headerTitle{
+
+}
 #headerText{}
-.taskBoxTitle{}
-.TaskBox{}
-ul{}
+.taskBoxTitle{
+  text-align:center;
+  border-bottom: 2px solid #242223;
+}
+.TaskBox{
+  border: 1px soild #83d8f9;
+  background-color: #6d6b6e;
+}
+ul{
+  text-align:left;
+  background-color: #aea9ad;
+  border-bottom: 1px solid #242223;
+}
 .taskText{}
-.clickZero{}
-.clickOne{}
-.clickTwo{}
+.clickZero{
+  background-color: #efddde;
+}
+.clickOne{
+  background-color: #f0ebef;
+}
+.clickTwo{
+  background-color: #ddf488;
+  text-decoration: line-through;
+}
 .taskBoxHeader{}
 .taskBoxWhole{}
-.MainContainer{}
+.MainContainer{
+  background-color: #ffffff;
+}

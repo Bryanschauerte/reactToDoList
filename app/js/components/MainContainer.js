@@ -41,7 +41,7 @@ renderTaskBoxes(){
   render(){
     return (
       <div className="MainContainer">
-        <h2>this is the boxes</h2>
+        <h2>Major Tasks of the Day</h2>
         {this.renderTaskBoxes()}
       </div>
     );

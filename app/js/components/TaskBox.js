@@ -4,6 +4,9 @@ import TextInput from './TextInput';
 import TodoListItem from './TodoListItem';
 import TodoStore from '../store/TodoStore'
 
+function getTaskstodosState(TaskID) {
+  return {todos: TodoStore.getTaskTodos(TaskID) }
+}
 
 var TaskBox = React.createClass({
 
@@ -24,10 +27,7 @@ var TaskBox = React.createClass({
       }
   },
 
-  //called after initial rendering, can ref children
-  componentDidMount(nextProps){
-    //for dom stuff  after rendering
-  },
+
   componentWillMount(){
     TodoStore.addChangeListener(this._onChange);
   },
@@ -36,16 +36,15 @@ var TaskBox = React.createClass({
     TodoStore.removeChangeListener(this._onChange);
   },
   _onChange(){
-    this.setState(
-    {todos: this.props.todos}
-  );
+    var TaskID = this.state.id;
+    if(this.isMounted){
+    this.setState(getTaskstodosState(TaskID));
+    }
   },
 
 renderListItems(){
-
   var taskID = this.state.id;
   var todos = this.state.todos.map((item, index)=>{
-  var id = item.id;
     return (
       <TodoListItem
       taskID={taskID}
@@ -55,9 +54,6 @@ renderListItems(){
   });
   return todos;
 },
-
-
-
 removeTaskBox(){
   var taskID = this.state.id;
   ViewActionsCreator.destroyTASK(taskID);
@@ -67,10 +63,12 @@ render(){
 
     return(
       <div className="TaskBox" key={this.state.id}>
-        <div className="taskBoxHeader"><h3 className="taskBoxTitle">Title: {this.state.title}</h3>
-         <button
-           onClick={this.removeTaskBox}
-           >REMOVE TASK</button>
+        <div className="taskBoxHeader"><h3 className="taskBoxTitle">Title: {this.state.title}
+          <br/><button
+            onClick={this.removeTaskBox}
+            >REMOVE TASK</button>
+        </h3>
+
          </div>
           <TextInput
             className = "taskText"
